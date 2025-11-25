@@ -5,11 +5,14 @@
 
 struct type_t {
     char c;
-    void (*f)(va_list);
+    int (*f)(va_list);
 };
 
 int _printf(const char *format,...);
-void print_int (va_list args);
-void print_diese(va_list args);
+int print_int (va_list args);
+int print_double(va_list args);
+int print_string(va_list args);
+int print_char(va_list args);
+int print_diese(va_list args);
 
 #endif

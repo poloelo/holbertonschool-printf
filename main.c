@@ -2,5 +2,6 @@
 
 int main()
 {
-    _printf("Fatou %%\n");
+    int count = _printf("Hello ma lettre pref est : %c\n", 'A');
+    _printf("%i", count);
 }

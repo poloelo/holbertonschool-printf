@@ -4,6 +4,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+int print_int(va_list args);
+int print_double(va_list args);
+int print_string(va_list args);
+int print_char(va_list args);
+int print_diese(va_list args);
+
 /**
  * Creation of the type_t type that stores a char c and a function pointer.
  * 
@@ -13,16 +19,16 @@
 
 struct type_t {
     char c;
-    void (*f)(va_list);
+    int (*f)(va_list);
 };
 
 struct type_t correspondance[] = 
 {
-    {'i', print_int},
     {'d' ,print_double},
-    {'c', print_char},
+    {'c', print_char}, 
+    {'i', print_int},
     {'s', print_string},
-    {'%' , print_diese},
+    {'%' ,print_diese},
     {'0', NULL}
 };
 
@@ -37,11 +43,14 @@ int _printf(const char *format, ...)
     va_start(values, format);
 
     int i = 0;
+    int count = 0;
+
     while (format[i] != '\0')
     {
         if (format[i] != '%')
         {
         putchar(format[i]);
+        count++;
         }
         else if (format[i] == '%')
         {
@@ -49,38 +58,43 @@ int _printf(const char *format, ...)
             {
                 if (format[i + 1] == correspondance[j].c)
                 {
-                    correspondance[j].f(values);
+                    count += correspondance[j].f(values);
                 }
             }
             i++;
         }
         i++;
     }
+    return count;
+}
+
+int print_int (va_list args)
+{
+     printf("%i", va_arg(args, int));
+     return 0;
+}
+
+int print_double(va_list args)
+{
     return 0;
 }
 
-void print_int (va_list args)
+int print_char(va_list args)
 {
-     printf("%i", va_arg(args, int));
+    int count = 0;
+    char c = va_arg(args, int);
+    putchar(c);
+    count++;
+    return count;
 }
 
-void print_double(va_list args)
+int print_string(va_list args)
 {
-    return;
+    return 0;
 }
 
-void print_char(va_list args)
-{
-    return;
-}
-
-void print_string(va_list args)
-{
-    return;
-}
-
-void print_diese(va_list args)
+int print_diese(va_list args)
 {
     putchar('%');
-    return;
+    return 0;
 }
