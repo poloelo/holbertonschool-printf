@@ -178,15 +178,14 @@ struct type_t correspondance[] =
 int _printf(const char *format, ...)
 {
     va_list values;
+    va_start(values, format);
+
     int i = 0;
     int count = 0;
-    int j;
-    
-    va_start(values, format);
+    int j, found;
 
     while (format[i] != '\0')
     {
-        /* Direct character printing */
         if (format[i] != '%')
         {
             putchar(format[i]);
@@ -194,33 +193,32 @@ int _printf(const char *format, ...)
         }
         else
         {
-            /* Match format specifier */
-        int found = 0;
-
-        for (j = 0; correspondance[j].f != NULL; j++)
-
-        {
-            if (format[i + 1] == correspondance[j].c)
+            found = 0;
+            if (format[i + 1] != '\0')
             {
-                count += correspondance[j].f(&values);
-                found = 1;
-                break;
+                for (j = 0; correspondance[j].f != NULL; j++)
+                {
+                    if (format[i + 1] == correspondance[j].c)
+                    {
+                        count += correspondance[j].f(&values);
+                        found = 1;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    putchar('%');
+                    putchar(format[i + 1]);
+                    count += 2;
+                }
+                i++; // skip specifier
             }
-        }
-
-        if (!found && format[i + 1] != '\0')
-
-            {
-            /* print % and unknown char */
-            putchar('%');
-            putchar(format[i + 1]);
-            count += 2;
-            }
-
-            i++; /* Skip format specifier char */
+            /* else: % is last char → do nothing */
         }
         i++;
     }
 
+    va_end(values);
     return count;
 }

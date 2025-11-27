@@ -2,6 +2,6 @@
 
 int main()
 {
-    int every_letters = _printf("%\n");
+    int every_letters = _printf("%");
     _printf("%i", every_letters);
 }
