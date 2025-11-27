@@ -178,11 +178,13 @@ struct type_t correspondance[] =
 int _printf(const char *format, ...)
 {
     va_list values;
-    va_start(values, format);
-
-    int i = 0;
-    int count = 0;
+    int i;
+    int count;
     int j, found;
+
+    va_start(values, format);
+    count = 0;
+    i = 0;
 
     while (format[i] != '\0')
     {
@@ -212,7 +214,7 @@ int _printf(const char *format, ...)
                     putchar(format[i + 1]);
                     count += 2;
                 }
-                i++; // skip specifier
+                i++; 
             }
             /* else: % is last char → do nothing */
         }
