@@ -2,5 +2,5 @@
 
 int main(void)
 {
-    int count = _printf("%");
+    _printf("%r", 3);
 }
