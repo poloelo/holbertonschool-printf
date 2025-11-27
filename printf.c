@@ -43,7 +43,6 @@ int print_int(va_list *args)
     return count;
 }
 
-
 int print_double(va_list *args)
 {
     double n = va_arg(*args, double);
@@ -67,7 +66,7 @@ int print_double(va_list *args)
 
     /* Extract fractional part (6 decimals) */
     frac = n - int_part;
-    dec_part = (long)(frac * 1000000);
+    dec_part = (long)(frac * 1000000 + 0.5);  /* Ajout d'arrondi */
 
     /* Print integer part */
     div = 1;
@@ -112,7 +111,6 @@ int print_double(va_list *args)
     return count;
 }
 
-
 int print_char(va_list *args)
 {
     char c = va_arg(*args, int);
@@ -156,9 +154,9 @@ struct type_t {
 /* Lookup table for format specifiers */
 struct type_t correspondance[] =
 {
-    {'d' ,print_double},
+    {'f' ,print_double},
     {'c', print_char},
-    {'i', print_int},
+    {'d', print_int},
     {'s', print_string},
     {'%' ,print_percent},
     {'0', NULL}
