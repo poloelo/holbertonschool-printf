@@ -154,9 +154,9 @@ struct type_t {
 /* Lookup table for format specifiers */
 struct type_t correspondance[] =
 {
-    {'f' ,print_double},
+    {'d' ,print_int},
     {'c', print_char},
-    {'d', print_int},
+    {'i', print_int},
     {'s', print_string},
     {'%' ,print_percent},
     {'0', NULL}
