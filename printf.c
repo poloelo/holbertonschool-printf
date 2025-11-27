@@ -150,9 +150,10 @@ int _printf(const char *format, ...)
                 }
                 i += 2; 
             }
-            else
+            else    /* Case: string ends with '%' */
             {
-                i++;
+                va_end(values);
+                return -1;  /* IMPORTANT : ne rien afficher */
             }
         }
     }
