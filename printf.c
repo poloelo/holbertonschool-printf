@@ -48,6 +48,11 @@ int print_double(va_list *args)
 {
     double n = va_arg(*args, double);
     int count = 0;
+    long int_part;
+    double frac;
+    long dec_part;
+    long div;
+    long tmp;
 
     /* Handle negative numbers */
     if (n < 0)
@@ -58,15 +63,15 @@ int print_double(va_list *args)
     }
 
     /* Extract integer part */
-    long int_part = (long)n;
+    int_part = (long)n;
 
     /* Extract fractional part (6 decimals) */
-    double frac = n - int_part;
-    long dec_part = (long)(frac * 1000000);
+    frac = n - int_part;
+    dec_part = (long)(frac * 1000000);
 
     /* Print integer part */
-    long div = 1;
-    long tmp = int_part;
+    div = 1;
+    tmp = int_part;
 
     if (tmp == 0)
     {
@@ -110,7 +115,6 @@ int print_double(va_list *args)
 
 int print_char(va_list *args)
 {
-    int count = 0;
     char c = va_arg(*args, int);
 
     /* Print one character */
@@ -134,6 +138,7 @@ int print_string(va_list *args)
 
 int print_percent(va_list *args)
 {
+    (void)args;
     /* Print '%' literally */
     putchar('%');
     return 1;
@@ -168,10 +173,11 @@ struct type_t correspondance[] =
 int _printf(const char *format, ...)
 {
     va_list values;
-    va_start(values, format);
-
     int i = 0;
     int count = 0;
+    int j;
+    
+    va_start(values, format);
 
     while (format[i] != '\0')
     {
@@ -184,7 +190,7 @@ int _printf(const char *format, ...)
         else
         {
             /* Match format specifier */
-            for (int j = 0; correspondance[j].f != NULL; j++)
+            for (j = 0; correspondance[j].f != NULL; j++)
             {
                 if (format[i + 1] == correspondance[j].c)
                 {
