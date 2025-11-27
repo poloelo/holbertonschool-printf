@@ -1,30 +1,25 @@
 #include "main.h"
 
-
 int print_int(va_list *args)
 {
     int n = va_arg(*args, int);
     int divisor = 1;
     int temp, count = 0;
-
-    /* Special case: INT_MIN */
-    if (n == -2147483648)
-    {
-        _putchar('-');
-        _putchar('2');
-        count += 2;
-        n = 147483648; /* Remove the leading "2" */
-    }
+    unsigned int num;
 
     /* Handle negative numbers */
     if (n < 0)
     {
         _putchar('-');
         count++;
-        n = -n;
+        num = (unsigned int)(-n);  /* Conversion vers unsigned */
+    }
+    else
+    {
+        num = (unsigned int)n;
     }
 
-    temp = n;
+    temp = num;
 
     /* Find divisor */
     while (temp >= 10)
@@ -36,11 +31,10 @@ int print_int(va_list *args)
     /* Print digits */
     while (divisor > 0)
     {
-        _putchar((n / divisor) % 10 + '0');
+        _putchar((num / divisor) % 10 + '0');
         count++;
         divisor /= 10;
     }
 
     return count;
 }
-
