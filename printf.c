@@ -9,13 +9,21 @@
  * extracted from the variadic argument list.
  */
 
-
+ 
 int print_int(va_list *args)
 {
-    int n = va_arg(*args,int);
+    int n = va_arg(*args, int);
     int divisor = 1;
-    int temp = n;
-    int count = 0;
+    int temp, count = 0;
+
+    /* Special case: INT_MIN */
+    if (n == -2147483648)
+    {
+        putchar('-');
+        putchar('2');
+        count += 2;
+        n = 147483648; /* Remove the leading "2" */
+    }
 
     /* Handle negative numbers */
     if (n < 0)
@@ -23,17 +31,18 @@ int print_int(va_list *args)
         putchar('-');
         count++;
         n = -n;
-        temp = n;
     }
 
-    /* Find the highest divisor */
+    temp = n;
+
+    /* Find divisor */
     while (temp >= 10)
     {
         temp /= 10;
         divisor *= 10;
     }
 
-    /* Print digits one by one */
+    /* Print digits */
     while (divisor > 0)
     {
         putchar((n / divisor) % 10 + '0');
@@ -86,13 +95,14 @@ int print_percent(va_list *args)
  * Structure linking a format specifier to its corresponding print function.
  */
 
-struct type_t {
+typedef struct type_flag{
     char c;
     int (*f)(va_list *);
-};
+} flag;
 
 /* Lookup table for format specifiers */
-struct type_t correspondance[] =
+
+flag f_list[] =
 {
     {'d' ,print_int},
     {'c', print_char},
@@ -132,11 +142,11 @@ int _printf(const char *format, ...)
             found = 0;
             if (format[i + 1] != '\0')
             {
-                for (j = 0; correspondance[j].f != NULL; j++)
+                for (j = 0; f_list[j].f != NULL; j++)
                 {
-                    if (format[i + 1] == correspondance[j].c)
+                    if (format[i + 1] == f_list[j].c)
                     {
-                        count += correspondance[j].f(&values);
+                        count += f_list[j].f(&values);
                         found = 1;
                         break;
                     }
