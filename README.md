@@ -1,60 +1,99 @@
-Voici un README.md très basique pour ton projet _printf (style Holberton) :
+# _printf
 
-⸻
+A custom implementation of the printf function in C, recreating the basic functionality of the standard library's printf.
 
-_printf
+## Description
 
-Projet en C visant à recréer une version simplifiée de la fonction printf de la bibliothèque standard.
-La fonction _printf permet d’afficher du texte formaté en gérant certains spécificateurs.
+`_printf` is a variadic function that produces formatted output according to a format string. It processes the format string and prints characters to the standard output, replacing format specifiers with their corresponding values from the argument list.
 
-Fonctionnalités
+## Function Prototype
 
-_printf gère les formats suivants :
-	•	%c : affiche un caractère
-	•	%s : affiche une chaîne de caractères
-	•	%d / %i : affiche un entier signé
-	•	%b : affiche la représentation binaire d’un entier
-	•	%% : affiche un % littéral
-
-Tu peux ajouter d’autres formats selon ton projet.
-
-Structure du projet
-
-.
-├── _printf.c
-├── functions.c
-├── utils.c
-├── main.h
-└── README.md
-
-	•	_printf.c → fonction principale qui parcourt la string et gère les formats
-	•	functions.c → contient les fonctions print_xxx
-	•	utils.c → fonctions utilitaires (ex : convertir un nombre, écrire un char…)
-	•	main.h → prototypes et structures
-
-Prototype
-
+```c
 int _printf(const char *format, ...);
+```
 
-🔧 Compilation
+## Supported Format Specifiers
 
-Compilation recommandée :
+| Specifier | Description | Output |
+|-----------|-------------|--------|
+| `%c` | Character | Single character |
+| `%s` | String | String of characters |
+| `%d` | Decimal integer | Signed decimal integer |
+| `%i` | Integer | Signed decimal integer |
+| `%%` | Percent sign | Literal '%' character |
 
-gcc -Wall -Wextra -Werror -pedantic *.c -o printf
+## Return Value
 
-Exemple d’utilisation
+- On success: Returns the number of characters printed (excluding the null terminator)
+- On error: Returns -1 if the format string ends with a '%' character
 
-_printf("Hello %s ! Le nombre est %d\n", "Paul", 42);
+## Files
 
-Sortie :
+- `printf.h` - Header file containing function prototypes
+- `_printf.c` - Main implementation file
 
-Hello Paul ! Le nombre est 42
+## Implementation Details
 
-Notes
-	•	Ne doit pas utiliser printf, puts, fprintf, etc.
-	•	Seules les fonctions _putchar et write sont autorisées pour l’affichage.
-	•	Le retour de _printf correspond au nombre total de caractères imprimés.
+The function uses a lookup table structure to match format specifiers with their corresponding handler functions:
 
-⸻
+- `print_char()` - Handles `%c` specifier
+- `print_string()` - Handles `%s` specifier
+- `print_int()` - Handles `%d` and `%i` specifiers
+- `print_percent()` - Handles `%%` specifier
 
-Si tu veux un README plus complet (exemples, table des spécificateurs, explications du code), je peux te le faire !
+## Usage Example
+
+```c
+#include "printf.h"
+
+int main(void)
+{
+    int count;
+    
+    count = _printf("Hello %s!\n", "World");
+    _printf("Character: %c\n", 'A');
+    _printf("Number: %d\n", 42);
+    _printf("Percentage: 100%%\n");
+    
+    return (0);
+}
+```
+
+### Output
+```
+Hello World!
+Character: A
+Number: 42
+Percentage: 100%
+```
+
+## Compilation
+
+Compile the program using gcc with the following flags:
+
+```bash
+gcc -Wall -Werror -Wextra -pedantic -Wno-format -std=gnu89 *.c -o printf
+```
+
+## Features
+
+- Handles basic format specifiers
+- Supports negative numbers
+- NULL string handling (prints "(null)")
+- Returns character count
+- Error handling for incomplete format strings
+
+## Known Limitations
+
+- Does not support all standard printf format specifiers (e.g., %f, %x, %o, %u, %p)
+- Does not support field width, precision, or length modifiers
+- Does not support flags like '+', '-', ' ', '#', '0'
+- **Bug**: Incorrect handling of `INT_MIN` (-2147483648)
+
+## Authors
+
+Project developed as part of a C programming curriculum.
+
+## License
+
+This project is part of an educational program.
