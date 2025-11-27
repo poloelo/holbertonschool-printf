@@ -2,5 +2,6 @@
 
 int main(void)
 {
-    _printf("%r", 3);
+    int count = _printf("je suis a 100 % de batterie", 3);
+    _printf("%i", count);
 }
