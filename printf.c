@@ -125,6 +125,11 @@ int print_string(va_list *args)
     int i = 0;
     char *s = va_arg(*args, char *);
 
+    if (s == NULL)
+    {
+        return _printf("(null)");
+    }
+
     /* Print characters until null terminator */
     while (s[i] != '\0')
     {
